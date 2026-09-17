@@ -8,6 +8,10 @@
 
 Собрано по прототипу из `design/Ikrima - прототип.dc.html`.
 
+**Открыть:** https://zhamulaevraiza-debug.github.io/ikrima/
+
+На телефоне страницу можно добавить на экран «Домой» — откроется как обычное приложение.
+
 ## Запуск
 
 ```bash
@@ -83,10 +87,9 @@ GitHub Pages, и на обычном хостинге, и из файла, бе�
 
 ## Публикация на GitHub Pages
 
-В репозитории лежит `.github/workflows/deploy.yml`. После первого пуша в `main`:
-
-1. Settings → Pages → Source → **GitHub Actions**.
-2. Дальше каждый пуш в `main` пересобирает и публикует сайт сам.
+Уже настроено: `.github/workflows/deploy.yml` собирает и публикует сайт при каждом пуше
+в `main`, источник в Settings → Pages переключён на **GitHub Actions**. Ничего делать не нужно —
+`git push`, и через минуту обновление на https://zhamulaevraiza-debug.github.io/ikrima/
 
 `base: ''` в `vite.config.ts` делает пути к файлам относительными, поэтому сборка одинаково
 работает и на `user.github.io/ikrima/`, и на своём домене.
