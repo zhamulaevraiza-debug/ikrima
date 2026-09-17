@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prata&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#E8E4DA;font-family:Manrope,system-ui,sans-serif;color:#14120C}
+a{color:#14120C}a:hover{color:#6b5f1f}
+input,textarea,button{font-family:Manrope,system-ui,sans-serif}
+input:focus,textarea:focus{outline:none;border-color:#14120C}
+::placeholder{color:rgba(20,18,12,.55)}
+</style></helmet>
+
+<div style="min-height:100vh;box-sizing:border-box;padding:34px 22px;display:flex;flex-wrap:wrap;gap:34px;justify-content:center;align-items:flex-start">
+
+  <div style="width:252px;flex:none;display:flex;flex-direction:column;gap:18px">
+    <div style="display:flex;align-items:center;gap:10px">
+      <svg width="32" height="25" viewBox="0 0 34 26" fill="none" stroke="#14120C" stroke-width="1.4" stroke-linecap="round"><path d="M17 2.4c2.4-.6 3.6.6 3.4 2.2-.2 1.4-1.6 1.9-3.4 2.9"/><path d="M17 7.5c-5 1.6-10 4.4-14.5 8.6-1.4 1.3-1 2.4 1 2.6 3.6.3 6.4 1.9 8.3 4.6"/><path d="M17 7.5c5 1.6 10 4.4 14.5 8.6 1.4 1.3 1 2.4-1 2.6-3.6.3-6.4 1.9-8.3 4.6"/><path d="M14.4 9.1 17 13.6l2.6-4.5"/><path d="M17 13.6v8.4"/></svg>
+      <div>
+        <div style="font-family:Prata,serif;font-size:22px;line-height:1">Ikrima</div>
+        <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(20,18,12,.65);font-weight:700;margin-top:3px">прототип · с. Шатой</div>
+      </div>
+    </div>
+    <div style="font-size:12px;line-height:1.6;color:rgba(20,18,12,.62)">Кликабельный прототип: каталог и покупка готовой вещи, заявка на пошив с мерками с вашей одежды, запись на примерку, статус заказа и кабинет швеи. Наличие размеров, которое швея правит в кабинете, сразу меняется в каталоге.</div>
+    <div style="display:flex;flex-direction:column;gap:5px">
+      <sc-for list="{{ navIndex }}" as="n" hint-placeholder-count="10">
+        <div onClick="{{ n.go }}" style="display:flex;align-items:center;gap:9px;padding:8px 11px;border-radius:8px;cursor:pointer;background:{{ n.bg }};color:{{ n.fg }};font-size:12.5px;font-weight:600" style-hover="background:rgba(20,18,12,.09)">
+          <span style="font:600 9.5px ui-monospace,Menlo,monospace;opacity:.5">{{ n.num }}</span>{{ n.label }}
+        </div>
+      </sc-for>
+    </div>
+    <div style="font-size:11px;line-height:1.55;color:rgba(20,18,12,.6);border-top:1px solid rgba(20,18,12,.14);padding-top:14px">Фото — плейсхолдеры. Веб-версия для витрины и приёма заявок собирается на этих же экранах — скажите, когда делать.</div>
+  </div>
+
+  <div style="flex:none">
+  <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+  <div style="height:100%;position:relative;background:#F7F3E6;overflow:hidden">
+
+    <sc-if value="{{ isCatalog }}" hint-placeholder-val="{{ true }}">
+    <div style="height:100%;display:flex;flex-direction:column">
+      <div style="flex:none;padding:60px 20px 18px;background:#E7DC52;background-image:radial-gradient(60px 40px at 78% 24%,rgba(160,132,30,.28),transparent 70%),radial-gradient(90px 60px at 18% 84%,rgba(160,132,30,.2),transparent 70%)">
+        <div style="display:flex;align-items:center;gap:10px">
+          <svg width="34" height="26" viewBox="0 0 34 26" fill="none" stroke="#14120C" stroke-width="1.4" stroke-linecap="round"><path d="M17 2.4c2.4-.6 3.6.6 3.4 2.2-.2 1.4-1.6 1.9-3.4 2.9"/><path d="M17 7.5c-5 1.6-10 4.4-14.5 8.6-1.4 1.3-1 2.4 1 2.6 3.6.3 6.4 1.9 8.3 4.6"/><path d="M17 7.5c5 1.6 10 4.4 14.5 8.6 1.4 1.3 1 2.4-1 2.6-3.6.3-6.4 1.9-8.3 4.6"/><path d="M14.4 9.1 17 13.6l2.6-4.5"/><path d="M17 13.6v8.4"/></svg>
+          <div style="display:flex;flex-direction:column;gap:2px">
+            <div style="font-family:Prata,serif;font-size:25px;line-height:1;letter-spacing:.5px">Ikrima</div>
+            <div style="font-size:9.5px;letter-spacing:1.6px;text-transform:uppercase;color:rgba(20,18,12,.62);font-weight:600">{{ tagline }}</div>
+          </div>
+          <div onClick="{{ goCart }}" style="margin-left:auto;width:38px;height:38px;border-radius:50%;border:1.2px solid rgba(20,18,12,.35);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;cursor:pointer">{{ cartCount }}</div>
+        </div>
+        <div style="margin-top:16px;display:flex;align-items:center;gap:10px;background:#F7F3E6;border:1.2px solid #14120C;border-radius:10px;padding:11px 13px">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="#14120C" stroke-width="1.5"><circle cx="6.4" cy="6.4" r="4.6"/><path d="m10 10 3.4 3.4" stroke-linecap="round"/></svg>
+          <span style="font-size:13.5px;color:rgba(20,18,12,.62)">Камис, штаны, размер</span>
+        </div>
+      </div>
+
+      <div style="flex:1;overflow:auto;padding:16px 0 100px">
+        <div style="display:flex;gap:8px;padding:0 20px;overflow:auto">
+          <sc-for list="{{ chips }}" as="c" hint-placeholder-count="5">
+            <div onClick="{{ c.pick }}" style="flex:none;padding:8px 14px;border-radius:999px;cursor:pointer;background:{{ c.bg }};color:{{ c.fg }};font-size:12.5px;font-weight:600">{{ c.label }}</div>
+          </sc-for>
+        </div>
+
+        <div onClick="{{ goMeasure }}" style="margin:16px 20px 0;padding:16px;border:1.4px solid #14120C;border-radius:14px;background:#fff;display:flex;gap:14px;align-items:center;cursor:pointer">
+          <div style="flex:1">
+            <div style="font-family:Prata,serif;font-size:17px;line-height:1.25">Мерки снимаем с вашей одежды</div>
+            <div style="margin-top:5px;font-size:12px;line-height:1.45;color:rgba(20,18,12,.6)">Измерьте вещь, которая хорошо сидит. Остальное — на примерке в с. Шатой</div>
+            <div style="margin-top:11px;display:inline-flex;padding:9px 15px;border-radius:9px;background:#14120C;color:#E7DC52;font-size:12.5px;font-weight:700">{{ ctaMeasure }}</div>
+          </div>
+          <div style="width:74px;height:92px;flex:none;border:1.2px dashed rgba(20,18,12,.4);border-radius:8px;background:repeating-linear-gradient(45deg,rgba(20,18,12,.05) 0 5px,transparent 5px 10px);display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px;font-size:8.5px;color:rgba(20,18,12,.6);text-align:center">схема<br>обмера</div>
+        </div>
+
+        <div style="display:flex;align-items:baseline;justify-content:space-between;margin:24px 20px 12px">
+          <div style="font-family:Prata,serif;font-size:19px">{{ catalogTitle }}</div>
+          <div onClick="{{ goPortfolio }}" style="font-size:12px;color:rgba(20,18,12,.62);font-weight:600;cursor:pointer">Портфолио →</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:0 20px">
+          <sc-for list="{{ products }}" as="p" hint-placeholder-count="6">
+            <div onClick="{{ p.open }}" style="display:flex;flex-direction:column;gap:7px;cursor:pointer">
+              <div style="aspect-ratio:3/4;border-radius:12px;border:1px solid rgba(20,18,12,.18);background:repeating-linear-gradient(45deg,rgba(20,18,12,.045) 0 6px,transparent 6px 12px),#EFEADA;display:flex;align-items:flex-end;padding:8px;font-size:9px;color:rgba(20,18,12,.6)">{{ p.ph }}</div>
+              <div style="font-size:13.5px;font-weight:600;line-height:1.3">{{ p.name }}</div>
+              <div style="font-size:11.5px;color:{{ p.stockColor }}">{{ p.stockText }}</div>
+              <div style="font-size:14px;font-weight:700">{{ p.priceText }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isProduct }}" hint-placeholder-val="{{ false }}">
+    <div style="height:100%;display:flex;flex-direction:column">
+      <div style="flex:none;padding:58px 18px 12px;display:flex;align-items:center;gap:12px;background:#F7F3E6">
+        <div onClick="{{ goCatalog }}" style="width:36px;height:36px;border-radius:50%;border:1.2px solid rgba(20,18,12,.3);display:flex;align-items:center;justify-content:center;cursor:pointer">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="#14120C" stroke-width="1.6" stroke-linecap="round"><path d="M9 3 4.5 7.5 9 12"/></svg>
+        </div>
+        <div style="font-size:13px;font-weight:600;color:rgba(20,18,12,.6)">{{ prod.name }}</div>
+        <div onClick="{{ goCart }}" style="margin-left:auto;font-size:12.5px;font-weight:700;cursor:pointer">Корзина · {{ cartCount }}</div>
+      </div>
+      <div style="flex:1;overflow:auto;padding:0 18px 120px">
+        <div style="height:326px;border-radius:14px;border:1px solid rgba(20,18,12,.18);background:repeating-linear-gradient(45deg,rgba(20,18,12,.05) 0 7px,transparent 7px 14px),#EFEADA;display:flex;align-items:flex-end;padding:12px;font-size:10px;color:rgba(20,18,12,.6)">{{ prod.ph }}</div>
+        <div style="margin-top:16px;display:flex;align-items:baseline;gap:10px">
+          <div style="font-family:Prata,serif;font-size:24px;line-height:1.2">{{ prod.name }}</div>
+        </div>
+        <div style="margin-top:8px;display:flex;gap:7px;flex-wrap:wrap">
+          <div style="padding:5px 10px;border-radius:999px;background:rgba(20,18,12,.07);font-size:11px;font-weight:600">{{ prod.form }}</div>
+          <div style="padding:5px 10px;border-radius:999px;background:rgba(20,18,12,.07);font-size:11px;font-weight:600">{{ prod.fabric }}</div>
+        </div>
+        <div style="margin-top:14px;font-family:Prata,serif;font-size:26px">{{ prodPrice }}</div>
+        <div style="margin-top:4px;font-size:11.5px;color:rgba(20,18,12,.65)">оплата при получении</div>
+
+        <div style="margin-top:22px;font-size:12.5px;font-weight:700">Готовые размеры</div>
+        <div style="margin-top:9px;display:flex;gap:8px;flex-wrap:wrap">
+          <sc-for list="{{ prodSizes }}" as="s" hint-placeholder-count="3">
+            <div onClick="{{ s.pick }}" style="padding:10px 16px;border-radius:9px;cursor:pointer;border:1.3px solid {{ s.border }};background:{{ s.bg }};color:{{ s.fg }};font-size:13px;font-weight:600">{{ s.label }}</div>
+          </sc-for>
+        </div>
+        <sc-if value="{{ prodNoStock }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:10px;padding:12px 14px;border-radius:10px;background:rgba(20,18,12,.06);font-size:12px;line-height:1.5;color:rgba(20,18,12,.7)">Этой модели сейчас нет в наличии — шью на заказ по меркам с вашей одежды.</div>
+        </sc-if>
+
+        <div style="margin-top:22px;font-size:12.5px;font-weight:700">Ткань</div>
+        <div style="margin-top:10px;display:flex;gap:14px">
+          <sc-for list="{{ fabricSwatches }}" as="f" hint-placeholder-count="4">
+            <div onClick="{{ f.pick }}" style="display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer">
+              <div style="width:46px;height:46px;border-radius:50%;background:{{ f.color }};border:2px solid {{ f.ring }}"></div>
+              <span style="font-size:10px;color:rgba(20,18,12,.6)">{{ f.name }}</span>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="margin-top:22px;padding:14px;border-radius:12px;border:1px solid rgba(20,18,12,.16);font-size:12px;line-height:1.55;color:rgba(20,18,12,.7)">
+          Мерки снимаю только с одежды. Пришлите размеры вашей вещи или приезжайте в с. Шатой — детали посадки решим на примерке.
+        </div>
+      </div>
+      <div style="position:absolute;bottom:0;left:0;right:0;padding:12px 18px 30px;background:rgba(247,243,230,.97);border-top:1px solid rgba(20,18,12,.12);display:flex;gap:10px">
+        <div onClick="{{ addToCart }}" style="flex:1;padding:14px;border-radius:11px;background:{{ buyBg }};color:{{ buyFg }};text-align:center;font-size:13.5px;font-weight:700;cursor:pointer">{{ buyLabel }}</div>
+        <div onClick="{{ goMeasure }}" style="flex:1;padding:14px;border-radius:11px;border:1.4px solid #14120C;text-align:center;font-size:13.5px;font-weight:700;cursor:pointer">Сшить на заказ</div>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isMeasure }}" hint-placeholder-val="{{ false }}">
+    <div style="height:100%;display:flex;flex-direction:column">
+      <div style="flex:none;padding:58px 20px 16px;background:#E7DC52">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div onClick="{{ goCatalog }}" style="width:34px;height:34px;border-radius:50%;border:1.2px solid rgba(20,18,12,.4);display:flex;align-items:center;justify-content:center;cursor:pointer">
+            <svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="#14120C" stroke-width="1.6" stroke-linecap="round"><path d="M9 3 4.5 7.5 9 12"/></svg>
+          </div>
+          <div style="font-family:Prata,serif;font-size:20px">{{ measureTitle }}</div>
+        </div>
+        <div style="margin-top:10px;font-size:12px;line-height:1.5;color:rgba(20,18,12,.72)">Измерьте вещь, которая хорошо сидит, и впишите сантиметры. Нюансы посадки решим на примерке.</div>
+      </div>
+      <div style="flex:1;overflow:auto;padding:18px 20px 110px">
+        <div style="font-size:12.5px;font-weight:700">Форма</div>
+        <div style="margin-top:9px;display:flex;gap:8px">
+          <sc-for list="{{ forms }}" as="f" hint-placeholder-count="2">
+            <div onClick="{{ f.pick }}" style="flex:1;padding:12px;border-radius:10px;text-align:center;cursor:pointer;border:1.3px solid {{ f.border }};background:{{ f.bg }};color:{{ f.fg }};font-size:12.5px;font-weight:600">{{ f.label }}</div>
+          </sc-for>
+        </div>
+
+        <div style="margin-top:22px;display:flex;align-items:baseline;justify-content:space-between">
+          <div style="font-size:12.5px;font-weight:700">Мерки с одежды, см</div>
+          <div style="font-size:11.5px;font-weight:600;color:rgba(20,18,12,.62)">{{ filledText }}</div>
+        </div>
+        <div style="margin-top:12px;display:flex;flex-direction:column;gap:12px">
+          <sc-for list="{{ mFields }}" as="f" hint-placeholder-count="6">
+            <div style="display:flex;align-items:center;gap:12px">
+              <div style="flex:1">
+                <div style="font-size:12.5px;font-weight:600">{{ f.label }}</div>
+                <div style="margin-top:2px;font-size:10.5px;color:rgba(20,18,12,.62);line-height:1.35">{{ f.hint }}</div>
+              </div>
+              <input value="{{ f.value }}" onChange="{{ f.set }}" placeholder="0" inputmode="decimal" style="width:74px;flex:none;padding:11px 12px;border-radius:9px;border:1.3px solid rgba(20,18,12,.25);background:#fff;font-size:14px;font-weight:600;text-align:center;color:#14120C" />
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="margin-top:22px;font-size:12.5px;font-weight:700">Фото вещи и референс</div>
+        <div style="margin-top:10px;display:flex;gap:10px">
+          <div style="flex:1;height:104px;border:1.3px dashed rgba(20,18,12,.4);border-radius:10px;background:repeating-linear-gradient(45deg,rgba(20,18,12,.05) 0 6px,transparent 6px 12px);display:flex;align-items:center;justify-content:center;font-size:10.5px;color:rgba(20,18,12,.62)">+ фото вашей вещи</div>
+          <div style="flex:1;height:104px;border:1.3px dashed rgba(20,18,12,.4);border-radius:10px;background:repeating-linear-gradient(45deg,rgba(20,18,12,.05) 0 6px,transparent 6px 12px);display:flex;align-items:center;justify-content:center;font-size:10.5px;color:rgba(20,18,12,.62)">+ образец модели</div>
+        </div>
+
+        <div style="margin-top:22px;font-size:12.5px;font-weight:700">Ткань</div>
+        <div style="margin-top:10px;display:flex;gap:14px">
+          <sc-for list="{{ fabricSwatches }}" as="f" hint-placeholder-count="4">
+            <div onClick="{{ f.pick }}" style="display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer">
+              <div style="width:46px;height:46px;border-radius:50%;background:{{ f.color }};border:2px solid {{ f.ring }}"></div>
+              <span style="font-size:10px;color:rgba(20,18,12,.6)">{{ f.name }}</span>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="margin-top:22px;font-size:12.5px;font-weight:700">Комментарий</div>
+        <textarea value="{{ comment }}" onChange="{{ setComment }}" placeholder="Длина рукава как на фото, воротник пониже…" style="margin-top:10px;width:100%;box-sizing:border-box;height:78px;padding:12px;border-radius:10px;border:1.3px solid rgba(20,18,12,.25);background:#fff;font-size:12.5px;line-height:1.5;resize:none;color:#14120C"></textarea>
+
+        <div onClick="{{ goFitting }}" style="margin-top:16px;padding:14px;border-radius:11px;border:1.4px solid #14120C;text-align:center;font-size:13px;font-weight:700;cursor:pointer">Записаться на примерку в Шатое</div>
+      </div>
+      <div style="position:absolute;bottom:0;left:0;right:0;padding:12px 18px 30px;background:rgba(247,243,230,.97);border-top:1px solid rgba(20,18,12,.12)">
+        <div onClick="{{ sendMeasure }}" style="padding:15px;border-radius:11px;background:#14120C;color:#E7DC52;text-align:center;font-size:14px;font-weight:700;cursor:pointer">Отправить заявку</div>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isDone }}" hint-placeholder-val="{{ false }}">
+    <div style="height:100%;display:flex;flex-direction:column;justify-content:center;padding:40px 30px;text-align:center;background:#E7DC52;background-image:radial-gradient(90px 60px at 80% 18%,rgba(160,132,30,.26),transparent 70%)">
+      <div style="align-self:center;width:58px;height:58px;border-radius:50%;background:#14120C;display:flex;align-items:center;justify-content:center">
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="#E7DC52" stroke-width="2" stroke-linecap="round"><path d="m6 13.5 4.5 4.5L20 8"/></svg>
+      </div>
+      <div style="margin-top:22px;font-family:Prata,serif;font-size:26px;line-height:1.25">Заявка №{{ newOrderNo }} отправлена</div>
+      <div style="margin-top:12px;font-size:13px;line-height:1.6;color:rgba(20,18,12,.72)">Швея посмотрит мерки и напишет в WhatsApp: подтвердит модель, ткань и срок. Оплата при получении.</div>
+      <div onClick="{{ goOrders }}" style="margin-top:26px;padding:14px;border-radius:11px;background:#14120C;color:#E7DC52;font-size:13.5px;font-weight:700;cursor:pointer">Смотреть статус заказа</div>
+      <div onClick="{{ goCatalog }}" style="margin-top:10px;padding:14px;border-radius:11px;border:1.4px solid #14120C;font-size:13.5px;font-weight:700;cursor:pointer">В каталог</div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isFitting }}" hint-placeholder-val="{{ false }}">
+    <div style="height:100%;display:flex;flex-direction:column">
+      <div style="flex:none;padding:58px 20px 16px;display:flex;align-items:center;gap:12px">
+        <div onClick="{{ goMeasure }}" style="width:34px;height:34px;border-radius:50%;border:1.2px solid rgba(20,18,12,.3);display:flex;align-items:center;justify-content:center;cursor:pointer">
+          <svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="#14120C" stroke-width="1.6" stroke-linecap="round"><path d="M9 3 4.5 7.5 9 12"/></svg>
+        </div>
+        <div style="font-family:Prata,serif;font-size:20px">Примерка</div>
+      </div>
+      <div style="flex:1;overflow:auto;padding:4px 20px 110px">
+        <div style="padding:14px;border-radius:12px;background:#fff;border:1px solid rgba(20,18,12,.16);font-size:12.5px;line-height:1.6">с. Шатой · мастерская<br><span style="color:rgba(20,18,12,.6)">+7 938 018-25-43</span></div>
+        <div style="margin-top:20px;font-size:12.5px;font-weight:700">Свободное время</div>
+        <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:9px">
+          <sc-for list="{{ slots }}" as="s" hint-placeholder-count="6">
+            <div onClick="{{ s.pick }}" style="padding:13px;border-radius:10px;text-align:center;cursor:pointer;border:1.3px solid {{ s.border }};background:{{ s.bg }};color:{{ s.fg }};font-size:12.5px;font-weight:600">{{ s.label }}</div>
+          </sc-for>
+        </div>
+        <div style="margin-top:18px;font-size:11.5px;line-height:1.55;color:rgba(20,18,12,.65)">На примерке уточняем посадку, длину и воротник. Возьмите с собой вещь, по которой снимали мерки.</div>
+      </div>
+      <div style="position:absolute;bottom:0;left:0;right:0;padding:12px 18px 30px;background:rgba(247,243,230,.97);border-top:1px solid rgba(20,18,12,.12)">
+        <div onClick="{{ bookSlot }}" style="padding:15px;border-radius:11px;background:{{ bookBg }};color:{{ bookFg }};text-align:center;font-size:14px;font-weight:700;cursor:pointer">{{ bookLabel }}</div>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isFabrics }}" hint-placeholder-val="{{ false }}">
+    <div style="height:100%;display:flex;flex-direction:column">
+      <div style="flex:none;padding:58px 20px 14px;display:flex;align-items:center;gap:12px">
+        <div onClick="{{ goCatalog }}" style="width:34px;height:34px;border-radius:50%;border:1.2px solid rgba(20,18,12,.3);display:flex;align-items:center;justify-content:center;cursor:pointer">
+          <svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="#14120C" stroke-width="1.6" stroke-linecap="round"><path d="M9 3 4.5 7.5 9 12"/></svg>
+        </div>
+        <div style="font-family:Prata,serif;font-size:20px">Ткани</div>
+      </div>
+      <div style="flex:1;overflow:auto;padding:4px 20px 100px;display:flex;flex-direction:column;gap:10px">
+        <sc-for list="{{ fabricRows }}" as="f" hint-placeholder-count="5">
+          <div onClick="{{ f.pick }}" style="display:flex;align-items:center;gap:14px;padding:13px;border-radius:12px;background:#fff;border:1.3px solid {{ f.border }};cursor:pointer">
+            <div style="width:54px;height:54px;flex:none;border-radius:8px;background:{{ f.color }};border:1px solid rgba(20,18,12,.18)"></div>
+            <div style="flex:1">
+              <div style="font-size:13.5px;font-weight:600">{{ f.name }}</div>
+              <div style="margin-top:3px;font-size:11.5px;color:rgba(20,18,12,.65)">{{ f.spec }}</div>
+            </div>
+            <div style="font-size:11px;font-weight:700;color:{{ f.statusColor }}">{{ f.status }}</div>
+          </div>
+        </sc-for>
+        <div style="margin-top:6px;font-size:11.5px;line-height:1.55;color:rgba(20,18,12,.65)">Ткань можно привезти свою — тогда в заявке напишите состав и метраж.</div>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isPortfolio }}" hint-placeholder-val="{{ false }}">
+    <div style="height:100%;display:flex;flex-direction:column">
+      <div style="flex:none;padding:58px 20px 14px;display:flex;align-items:center;gap:12px">
+        <div onClick="{{ goCatalog }}" style="width:34px;height:34px;border-radius:50%;border:1.2px solid rgba(20,18,12,.3);display:flex;align-items:center;justify-content:center;cursor:pointer">
+          <svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="#14120C" stroke-width="1.6" stroke-linecap="round"><path d="M9 3 4.5 7.5 9 12"/></svg>
+        </div>
+        <div style="font-family:Prata,serif;font-size:20px">Мои работы</div>
+      </div>
+      <div style="flex:1;overflow:auto;padding:4px 20px 100px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <sc-for list="{{ portfolio }}" as="w" hint-placeholder-count="6">
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="aspect-ratio:3/4;border-radius:11px;border:1px solid rgba(20,18,12,.18);background:repeating-linear-gradient(45deg,rgba(20,18,12,.05) 0 6px,transparent 6px 12px),#EFEADA;display:flex;align-items:flex-end;padding:8px;font-size:9px;color:rgba(20,18,12,.6)">{{ w.ph }}</div>
+              <div style="font-size:11.5px;font-weight:600">{{ w.label }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isCart }}" hint-placeholder-val="{{ false }}">
+    <div style="height:100%;display:flex;flex-direction:column">
+      <div style="flex:none;padding:58px 20px 14px;display:flex;align-items:center;gap:12px">
+        <div onClick="{{ goCatalog }}" style="width:34px;height:34px;border-radius:50%;border:1.2px solid rgba(20,18,12,.3);display:flex;align-items:center;justify-content:center;cursor:pointer">
+          <svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="#14120C" stroke-width="1.6" stroke-linecap="round"><path d="M9 3 4.5 7.5 9 12"/></svg>
+        </div>
+        <div style="font-family:Prata,serif;font-size:20px">Корзина</div>
+      </div>
+      <div style="flex:1;overflow:auto;padding:4px 20px 150px">
+        <sc-if value="{{ cartEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:40px;text-align:center;font-size:13px;line-height:1.6;color:rgba(20,18,12,.65)">Пока пусто.<br>Выберите вещь в каталоге или отправьте мерки на пошив.</div>
+        </sc-if>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <sc-for list="{{ cartItems }}" as="i" hint-placeholder-count="2">
+            <div style="display:flex;gap:12px;align-items:center;padding:12px;border-radius:12px;background:#fff;border:1px solid rgba(20,18,12,.14)">
+              <div style="width:52px;height:66px;flex:none;border-radius:7px;border:1px solid rgba(20,18,12,.16);background:repeating-linear-gradient(45deg,rgba(20,18,12,.05) 0 5px,transparent 5px 10px),#EFEADA"></div>
+              <div style="flex:1">
+                <div style="font-size:13px;font-weight:600">{{ i.name }}</div>
+                <div style="margin-top:3px;font-size:11.5px;color:rgba(20,18,12,.65)">{{ i.meta }}</div>
+                <div style="margin-top:5px;font-size:13px;font-weight:700">{{ i.priceText }}</div>
+              </div>
+              <div onClick="{{ i.remove }}" style="width:28px;height:28px;flex:none;border-radius:50%;background:rgba(20,18,12,.07);display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer">×</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="margin-top:22px;font-size:12.5px;font-weight:700">Получение</div>
+        <div style="margin-top:9px;display:flex;flex-direction:column;gap:8px">
+          <sc-for list="{{ delivery }}" as="d" hint-placeholder-count="2">
+            <div onClick="{{ d.pick }}" style="display:flex;align-items:center;gap:11px;padding:13px;border-radius:11px;cursor:pointer;border:1.3px solid {{ d.border }};background:{{ d.bg }}">
+              <div style="width:17px;height:17px;flex:none;border-radius:50%;border:1.5px solid #14120C;background:{{ d.dot }}"></div>
+              <div style="flex:1">
+                <div style="font-size:12.5px;font-weight:600">{{ d.label }}</div>
+                <div style="margin-top:2px;font-size:11px;color:rgba(20,18,12,.65)">{{ d.note }}</div>
+              </div>
+              <div style="font-size:12px;font-weight:700">{{ d.price }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="margin-top:18px;padding:13px;border-radius:11px;background:rgba(20,18,12,.06);font-size:11.5px;line-height:1.55;color:rgba(20,18,12,.7)">Оплата при получении — наличными или переводом. Предоплату не берём.</div>
+      </div>
+      <div style="position:absolute;bottom:0;left:0;right:0;padding:14px 18px 30px;background:rgba(247,243,230,.97);border-top:1px solid rgba(20,18,12,.12)">
+        <div style="display:flex;align-items:baseline;justify-content:space-between">
+          <span style="font-size:12.5px;color:rgba(20,18,12,.6);font-weight:600">К оплате при получении</span>
+          <span style="font-family:Prata,serif;font-size:21px">{{ cartTotal }}</span>
+        </div>
+        <div onClick="{{ placeOrder }}" style="margin-top:11px;padding:15px;border-radius:11px;background:{{ orderBg }};color:{{ orderFg }};text-align:center;font-size:14px;font-weight:700;cursor:pointer">Оформить заказ</div>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isOrders }}" hint-placeholder-val="{{ false }}">
+    <div style="height:100%;display:flex;flex-direction:column">
+      <div style="flex:none;padding:58px 20px 14px">
+        <div style="font-family:Prata,serif;font-size:22px">{{ ordersTitle }}</div>
+      </div>
+      <div style="flex:1;overflow:auto;padding:4px 20px 100px;display:flex;flex-direction:column;gap:12px">
+        <sc-for list="{{ myOrders }}" as="o" hint-placeholder-count="2">
+          <div style="padding:16px;border-radius:13px;background:#fff;border:1.3px solid rgba(20,18,12,.16)">
+            <div style="display:flex;align-items:baseline;justify-content:space-between">
+              <div style="font-size:13.5px;font-weight:700">№{{ o.id }} · {{ o.model }}</div>
+              <div style="font-size:11.5px;font-weight:700;color:#8A7413">{{ o.stageLabel }}</div>
+            </div>
+            <div style="margin-top:4px;font-size:11.5px;color:rgba(20,18,12,.65)">{{ o.meta }}</div>
+            <div style="margin-top:14px;display:flex;align-items:center">
+              <sc-for list="{{ o.steps }}" as="s" hint-placeholder-count="5">
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px">
+                  <div style="width:100%;display:flex;align-items:center">
+                    <div style="flex:1;height:2px;background:{{ s.lineL }}"></div>
+                    <div style="width:11px;height:11px;flex:none;border-radius:50%;background:{{ s.dot }};border:1.5px solid {{ s.ring }}"></div>
+                    <div style="flex:1;height:2px;background:{{ s.lineR }}"></div>
+                  </div>
+                  <span style="font-size:8.5px;color:{{ s.fg }};text-align:center">{{ s.label }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="margin-top:14px;display:flex;gap:9px">
+              <div style="flex:1;padding:11px;border-radius:9px;border:1.3px solid #14120C;text-align:center;font-size:12px;font-weight:700;cursor:pointer">WhatsApp швее</div>
+              <div style="flex:1;padding:11px;border-radius:9px;background:rgba(20,18,12,.07);text-align:center;font-size:12px;font-weight:600">Мои мерки</div>
+            </div>
+          </div>
+        </sc-for>
+        <div style="margin-top:6px;font-size:12px;font-weight:700;color:rgba(20,18,12,.6)">Завершённые</div>
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <sc-for list="{{ pastOrders }}" as="o" hint-placeholder-count="2">
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 13px;border-radius:11px;background:rgba(20,18,12,.045)">
+              <div style="flex:1;font-size:12.5px;font-weight:600">№{{ o.id }} · {{ o.model }}</div>
+              <div style="font-size:11.5px;color:rgba(20,18,12,.62)">{{ o.date }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isProfile }}" hint-placeholder-val="{{ false }}">
+    <div style="height:100%;display:flex;flex-direction:column">
+      <div style="flex:none;padding:58px 20px 18px;background:#E7DC52;background-image:radial-gradient(80px 50px at 82% 22%,rgba(160,132,30,.24),transparent 70%)">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div style="font-family:Prata,serif;font-size:22px">{{ profileTitle }}</div>
+          <div onClick="{{ toggleLang }}" style="padding:7px 12px;border-radius:999px;border:1.2px solid rgba(20,18,12,.4);font-size:11.5px;font-weight:700;cursor:pointer">{{ langLabel }}</div>
+        </div>
+        <div style="margin-top:12px;font-size:12.5px;line-height:1.6;color:rgba(20,18,12,.75)">Ikrima · индивидуальный пошив мужской исламской одежды<br>с. Шатой · +7 938 018-25-43</div>
+      </div>
+      <div style="flex:1;overflow:auto;padding:18px 20px 100px">
+        <div style="font-size:13px;line-height:1.65;color:rgba(20,18,12,.78)">Шью мужскую мусульманскую одежду: классическая форма и форма с узлами. Мерки снимаю только с одежды — присылайте размеры вашей вещи. Остальные нюансы решаем на примерке. Иногда бывают готовые размеры в наличии.</div>
+        <div style="margin-top:18px;display:flex;gap:9px">
+          <div style="flex:1;padding:13px;border-radius:11px;background:#14120C;color:#E7DC52;text-align:center;font-size:12.5px;font-weight:700;cursor:pointer">Написать в WhatsApp</div>
+          <div onClick="{{ goFabrics }}" style="flex:1;padding:13px;border-radius:11px;border:1.3px solid #14120C;text-align:center;font-size:12.5px;font-weight:700;cursor:pointer">Ткани</div>
+        </div>
+        <div style="margin-top:24px;font-size:12.5px;font-weight:700">Отзывы</div>
+        <div style="margin-top:10px;display:flex;flex-direction:column;gap:9px">
+          <sc-for list="{{ reviews }}" as="r" hint-placeholder-count="3">
+            <div style="padding:13px;border-radius:11px;border:1.2px dashed rgba(20,18,12,.3);font-size:11.5px;line-height:1.5;color:rgba(20,18,12,.62)">{{ r.text }}</div>
+          </sc-for>
+        </div>
+        <div onClick="{{ goCabinet }}" style="margin-top:24px;padding:15px;border-radius:12px;background:#14120C;display:flex;align-items:center;gap:12px;cursor:pointer">
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:700;color:#E7DC52">Кабинет швеи</div>
+            <div style="margin-top:3px;font-size:11px;color:rgba(247,243,230,.6)">заказы, мерки клиентов, наличие размеров</div>
+          </div>
+          <svg width="20" height="20" viewBox="0 0 26 26" fill="none" stroke="#E7DC52" stroke-width="1.7" stroke-linecap="round"><path d="M5 13h15M14 7l6 6-6 6"/></svg>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isCabinet }}" hint-placeholder-val="{{ false }}">
+    <div style="height:100%;display:flex;flex-direction:column;background:#14120C">
+      <div style="flex:none;padding:58px 20px 16px;display:flex;align-items:center;gap:12px">
+        <div onClick="{{ goProfile }}" style="width:34px;height:34px;border-radius:50%;border:1.2px solid rgba(231,220,82,.45);display:flex;align-items:center;justify-content:center;cursor:pointer">
+          <svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="#E7DC52" stroke-width="1.6" stroke-linecap="round"><path d="M9 3 4.5 7.5 9 12"/></svg>
+        </div>
+        <div style="font-family:Prata,serif;font-size:20px;color:#E7DC52">Кабинет швеи</div>
+      </div>
+      <div style="flex:1;overflow:auto;padding:4px 20px 40px">
+        <div style="display:flex;gap:9px">
+          <div style="flex:1;padding:13px;border-radius:11px;background:rgba(247,243,230,.07);border:1px solid rgba(247,243,230,.12)">
+            <div style="font-family:Prata,serif;font-size:22px;color:#E7DC52">{{ activeCount }}</div>
+            <div style="margin-top:3px;font-size:10.5px;color:rgba(247,243,230,.55)">в работе</div>
+          </div>
+          <div style="flex:1;padding:13px;border-radius:11px;background:rgba(247,243,230,.07);border:1px solid rgba(247,243,230,.12)">
+            <div style="font-family:Prata,serif;font-size:22px;color:#E7DC52">{{ newCount }}</div>
+            <div style="margin-top:3px;font-size:10.5px;color:rgba(247,243,230,.55)">новые заявки</div>
+          </div>
+        </div>
+
+        <div style="margin-top:22px;font-size:12.5px;font-weight:700;color:#F7F3E6">Заказы</div>
+        <div style="margin-top:10px;display:flex;flex-direction:column;gap:9px">
+          <sc-for list="{{ cabOrders }}" as="o" hint-placeholder-count="4">
+            <div onClick="{{ o.open }}" style="padding:14px;border-radius:12px;background:rgba(247,243,230,.06);border:1px solid rgba(247,243,230,.13);cursor:pointer">
+              <div style="display:flex;align-items:baseline;justify-content:space-between">
+                <div style="font-size:13px;font-weight:700;color:#F7F3E6">{{ o.client }}</div>
+                <div style="font-size:11px;font-weight:700;color:#E7DC52">{{ o.stageLabel }}</div>
+              </div>
+              <div style="margin-top:4px;font-size:11.5px;color:rgba(247,243,230,.55)">№{{ o.id }} · {{ o.model }} · {{ o.fabric }}</div>
+              <div style="margin-top:10px;height:3px;border-radius:2px;background:rgba(247,243,230,.14);overflow:hidden">
+                <div style="width:{{ o.pct }};height:100%;background:#E7DC52"></div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="margin-top:24px;font-size:12.5px;font-weight:700;color:#F7F3E6">Готовые размеры в наличии</div>
+        <div style="margin-top:4px;font-size:11px;color:rgba(247,243,230,.5);line-height:1.5">Отмечайте, что есть сейчас — в каталоге у клиента обновится сразу.</div>
+        <div style="margin-top:12px;display:flex;flex-direction:column;gap:12px">
+          <sc-for list="{{ stockRows }}" as="row" hint-placeholder-count="4">
+            <div>
+              <div style="font-size:12px;font-weight:600;color:rgba(247,243,230,.8)">{{ row.name }}</div>
+              <div style="margin-top:8px;display:flex;gap:7px;flex-wrap:wrap">
+                <sc-for list="{{ row.sizes }}" as="s" hint-placeholder-count="4">
+                  <div onClick="{{ s.toggle }}" style="padding:9px 14px;border-radius:9px;cursor:pointer;background:{{ s.bg }};color:{{ s.fg }};border:1.2px solid {{ s.border }};font-size:12px;font-weight:600">{{ s.label }}</div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isCabOrder }}" hint-placeholder-val="{{ false }}">
+    <div style="height:100%;display:flex;flex-direction:column;background:#14120C">
+      <div style="flex:none;padding:58px 20px 14px;display:flex;align-items:center;gap:12px">
+        <div onClick="{{ goCabinet }}" style="width:34px;height:34px;border-radius:50%;border:1.2px solid rgba(231,220,82,.45);display:flex;align-items:center;justify-content:center;cursor:pointer">
+          <svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="#E7DC52" stroke-width="1.6" stroke-linecap="round"><path d="M9 3 4.5 7.5 9 12"/></svg>
+        </div>
+        <div style="font-family:Prata,serif;font-size:19px;color:#E7DC52">{{ cab.client }}</div>
+      </div>
+      <div style="flex:1;overflow:auto;padding:4px 20px 130px">
+        <div style="font-size:12px;color:rgba(247,243,230,.6)">№{{ cab.id }} · {{ cab.model }} · {{ cab.fabric }}</div>
+        <div style="margin-top:18px;font-size:12.5px;font-weight:700;color:#F7F3E6">Мерки с одежды клиента, см</div>
+        <div style="margin-top:10px;border-radius:12px;overflow:hidden;border:1px solid rgba(247,243,230,.13)">
+          <sc-for list="{{ cabMeasures }}" as="m" hint-placeholder-count="6">
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:{{ m.bg }}">
+              <div style="flex:1;font-size:12px;color:rgba(247,243,230,.7)">{{ m.label }}</div>
+              <div style="font-size:14px;font-weight:700;color:#E7DC52">{{ m.value }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="margin-top:18px;display:flex;gap:10px">
+          <div style="flex:1;height:96px;border:1.2px dashed rgba(247,243,230,.3);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:10px;color:rgba(247,243,230,.45)">фото вещи клиента</div>
+          <div style="flex:1;height:96px;border:1.2px dashed rgba(247,243,230,.3);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:10px;color:rgba(247,243,230,.45)">образец модели</div>
+        </div>
+        <div style="margin-top:18px;padding:13px;border-radius:11px;background:rgba(247,243,230,.06);font-size:12px;line-height:1.55;color:rgba(247,243,230,.7)">Комментарий: {{ cab.comment }}</div>
+        <div style="margin-top:20px;font-size:12.5px;font-weight:700;color:#F7F3E6">Этап</div>
+        <div style="margin-top:10px;display:flex;flex-direction:column;gap:7px">
+          <sc-for list="{{ cabSteps }}" as="s" hint-placeholder-count="5">
+            <div style="display:flex;align-items:center;gap:11px;padding:11px 13px;border-radius:10px;background:{{ s.bg }};border:1px solid {{ s.border }}">
+              <div style="width:15px;height:15px;flex:none;border-radius:50%;border:1.5px solid {{ s.ring }};background:{{ s.dot }}"></div>
+              <div style="flex:1;font-size:12.5px;font-weight:600;color:{{ s.fg }}">{{ s.label }}</div>
+              <div style="font-size:10.5px;color:rgba(247,243,230,.45)">{{ s.note }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="position:absolute;bottom:0;left:0;right:0;padding:12px 18px 30px;background:rgba(20,18,12,.97);border-top:1px solid rgba(247,243,230,.12);display:flex;gap:10px">
+        <div onClick="{{ advance }}" style="flex:1;padding:14px;border-radius:11px;background:#E7DC52;color:#14120C;text-align:center;font-size:13px;font-weight:700;cursor:pointer">{{ advanceLabel }}</div>
+        <div style="flex:none;padding:14px 18px;border-radius:11px;border:1.3px solid rgba(231,220,82,.5);color:#E7DC52;font-size:13px;font-weight:700;cursor:pointer">Позвонить</div>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ showTabs }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;bottom:0;left:0;right:0;padding:10px 12px 26px;background:rgba(247,243,230,.97);border-top:1px solid rgba(20,18,12,.14);display:flex;z-index:40">
+      <div onClick="{{ goCatalog }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;color:{{ tabCatalog }}">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.5" y="2.5" width="6" height="6" rx="1.2"/><rect x="11.5" y="2.5" width="6" height="6" rx="1.2"/><rect x="2.5" y="11.5" width="6" height="6" rx="1.2"/><rect x="11.5" y="11.5" width="6" height="6" rx="1.2"/></svg>
+        <span style="font-size:10px;font-weight:700">{{ tabCatalogLabel }}</span></div>
+      <div onClick="{{ goMeasure }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;color:{{ tabMeasure }}">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6.5h14v7H3z"/><path d="M6.5 6.5v2.5M10 6.5v3.5M13.5 6.5v2.5" stroke-linecap="round"/></svg>
+        <span style="font-size:10px;font-weight:700">{{ tabMeasureLabel }}</span></div>
+      <div onClick="{{ goOrders }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;color:{{ tabOrders }}">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4.5 2.8h11v14.4l-2.7-1.7-2.8 1.7-2.8-1.7-2.7 1.7z"/><path d="M7.5 7h5M7.5 10.5h5" stroke-linecap="round"/></svg>
+        <span style="font-size:10px;font-weight:700">{{ tabOrdersLabel }}</span></div>
+      <div onClick="{{ goProfile }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;color:{{ tabProfile }}">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="7" r="3.2"/><path d="M4 17c1-3 3.2-4.4 6-4.4S15 14 16 17" stroke-linecap="round"/></svg>
+        <span style="font-size:10px;font-weight:700">{{ tabProfileLabel }}</span></div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;left:18px;right:18px;bottom:110px;padding:13px 16px;border-radius:11px;background:#14120C;color:#F7F3E6;font-size:12.5px;font-weight:600;z-index:60;box-shadow:0 12px 28px rgba(0,0,0,.28)">{{ toast }}</div>
+    </sc-if>
+
+  </div>
+  </x-import>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;priceMode&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;точные&quot;,&quot;от&quot;,&quot;скрыть&quot;],&quot;default&quot;:&quot;точные&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Цены&quot;},&quot;startInCabinet&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Показ&quot;}}">
+const INK='#14120C', YEL='#E7DC52', PAPER='#F7F3E6';
+const STAGES=['мерки','раскрой','пошив','примерка','выдача'];
+const FABRICS=[
+  {id:'gab-b',name:'габардин',full:'Габардин чёрный',color:'#1B1B1B',spec:'плотный, держит форму',status:'в наличии'},
+  {id:'pop-w',name:'поплин',full:'Поплин белый',color:'#F2EEE2',spec:'лёгкий, на лето',status:'в наличии'},
+  {id:'len-s',name:'лён',full:'Лён песочный',color:'#C9B98F',spec:'дышит, мягкие складки',status:'в наличии'},
+  {id:'twl-k',name:'твил',full:'Твил хаки',color:'#4A5A50',spec:'матовый, для формы с узлами',status:'под заказ'}
+];
+const PRODUCTS=[
+  {id:'k1',name:'Камис классический',form:'классическая форма',cat:'Классика',price:5900,sew:7200,ph:'фото · классическая форма',fabric:'габардин'},
+  {id:'k2',name:'Камис с узлами',form:'форма с узлами',cat:'С узлами',price:7400,sew:8500,ph:'фото · с узлами',fabric:'габардин'},
+  {id:'p1',name:'Штаны',form:'классическая форма',cat:'Штаны',price:2300,sew:3100,ph:'фото · штаны',fabric:'хлопок'},
+  {id:'j1',name:'Джалабия с узлами',form:'форма с узлами',cat:'С узлами',price:8200,sew:9400,ph:'фото · джалабия',fabric:'лён'},
+  {id:'k3',name:'Камис детский',form:'классическая форма',cat:'Классика',price:3400,sew:4200,ph:'фото · детский',fabric:'поплин'},
+  {id:'t1',name:'Такия',form:'аксессуар',cat:'Классика',price:900,sew:0,ph:'фото · такия',fabric:'шерсть'}
+];
+const MFIELDS=[
+  {key:'len',label:'Длина изделия',hint:'от плеча до низа по спине'},
+  {key:'shoulder',label:'Ширина плеч',hint:'от шва до шва'},
+  {key:'chest',label:'Ширина в груди',hint:'по вещи, от края до края'},
+  {key:'sleeve',label:'Длина рукава',hint:'от плечевого шва до края'},
+  {key:'cuff',label:'Ширина рукава внизу',hint:'по краю манжеты'},
+  {key:'hem',label:'Ширина по низу',hint:'от края до края'}
+];
+
+class Component extends DCLogic {
+  state = {
+    screen:null, filter:'Все', pid:'k1', size:null, fabric:'gab-b',
+    cart:[], m:{len:'',shoulder:'',chest:'',sleeve:'',cuff:'',hem:''},
+    form:'Классическая', comment:'', slot:null, lang:'RU', toast:'', cabId:142,
+    stock:{'Камис классический':{M:true,L:true,XL:false},'Штаны':{S:true,M:true,L:true},'Камис детский':{'6 лет':true,'8 лет':false},'Такия':{'один размер':true}},
+    orders:[
+      {id:142,client:'Ахмед М.',model:'Камис с узлами',fabric:'габардин чёрный',stage:1,mine:true,meta:'мерки приняты · готово до 28 сентября',comment:'рукав как на фото, воротник пониже'},
+      {id:143,client:'Иса Т.',model:'Штаны',fabric:'хлопок',stage:2,mine:false,comment:'длина на 2 см короче'},
+      {id:141,client:'Рустам А.',model:'Камис классический',fabric:'поплин белый',stage:3,mine:false,comment:'—'}
+    ],
+    past:[{id:138,model:'Камис классический',date:'август'},{id:131,model:'Штаны',date:'июль'}]
+  };
+
+  get screen(){ return this.state.screen ?? (this.props.startInCabinet ? 'cabinet' : 'catalog'); }
+  go(s){ return () => this.setState({screen:s}); }
+  toast(t){ this.setState({toast:t}); clearTimeout(this._t); this._t=setTimeout(()=>this.setState({toast:''}),2600); }
+  fmt(n){ return n.toLocaleString('ru-RU')+' ₽'; }
+  price(n){
+    const mode=this.props.priceMode ?? 'точные';
+    if(mode==='скрыть') return 'цена по запросу';
+    if(mode==='от') return 'от '+this.fmt(n);
+    return this.fmt(n);
+  }
+  sizesOf(name){ const s=this.state.stock[name]; return s? Object.keys(s).filter(k=>s[k]) : []; }
+
+  renderVals(){
+    const sc=this.screen, st=this.state, lang=st.lang, en=lang==='EN';
+    const prod=PRODUCTS.find(p=>p.id===st.pid)||PRODUCTS[0];
+    const prodSizesAll=st.stock[prod.name]?Object.keys(st.stock[prod.name]):[];
+    const inStock=this.sizesOf(prod.name);
+    const cab=st.orders.find(o=>o.id===st.cabId)||st.orders[0];
+
+    const navScreens=[['catalog','Каталог'],['product','Карточка товара'],['measure','Мерки с одежды'],['done','Заявка отправлена'],['fitting','Запись на примерку'],['fabrics','Ткани'],['portfolio','Портфолио'],['cart','Корзина · оплата при получении'],['orders','Статус заказа'],['profile','О мастере'],['cabinet','Кабинет швеи'],['cabOrder','Заказ в кабинете']];
+
+    return {
+      tagline: en?'Custom tailoring':'Индивидуальный пошив',
+      catalogTitle: en?'Available now':'Готовые размеры',
+      measureTitle: en?'Measurements':'Мерки с одежды',
+      ordersTitle: en?'My orders':'Мои заказы',
+      profileTitle: en?'The tailor':'О мастере',
+      ctaMeasure: en?'Send measurements':'Мерки с одежды',
+      tabCatalogLabel: en?'Shop':'Каталог', tabMeasureLabel: en?'Tailoring':'Пошив',
+      tabOrdersLabel: en?'Orders':'Заказы', tabProfileLabel: en?'Profile':'Профиль',
+      langLabel: en?'EN / RU':'RU / EN',
+      toggleLang: ()=>this.setState({lang:en?'RU':'EN'}),
+
+      isCatalog:sc==='catalog', isProduct:sc==='product', isMeasure:sc==='measure',
+      isDone:sc==='done', isFitting:sc==='fitting', isFabrics:sc==='fabrics',
+      isPortfolio:sc==='portfolio', isCart:sc==='cart', isOrders:sc==='orders',
+      isProfile:sc==='profile', isCabinet:sc==='cabinet', isCabOrder:sc==='cabOrder',
+      showTabs:['catalog','product','measure','fitting','fabrics','portfolio','cart','orders','profile'].indexOf(sc)>=0,
+      hasToast:!!st.toast, toast:st.toast,
+
+      goCatalog:this.go('catalog'), goMeasure:this.go('measure'), goOrders:this.go('orders'),
+      goProfile:this.go('profile'), goCart:this.go('cart'), goFabrics:this.go('fabrics'),
+      goPortfolio:this.go('portfolio'), goFitting:this.go('fitting'), goCabinet:this.go('cabinet'),
+
+      navIndex: navScreens.map(([s,label],i)=>({
+        num:String(i+1).padStart(2,'0'), label, go:this.go(s),
+        bg: sc===s?'rgba(20,18,12,.09)':'transparent', fg: sc===s?INK:'rgba(20,18,12,.62)'
+      })),
+
+      tabCatalog: sc==='catalog'?INK:'rgba(20,18,12,.62)',
+      tabMeasure: (sc==='measure'||sc==='fitting')?INK:'rgba(20,18,12,.62)',
+      tabOrders: sc==='orders'?INK:'rgba(20,18,12,.62)',
+      tabProfile: sc==='profile'?INK:'rgba(20,18,12,.62)',
+
+      chips: ['Все','Классика','С узлами','Штаны','Ткани'].map(label=>({
+        label, pick: label==='Ткани'? this.go('fabrics') : ()=>this.setState({filter:label}),
+        bg: st.filter===label?INK:'rgba(20,18,12,.07)', fg: st.filter===label?YEL:INK
+      })),
+
+      products: PRODUCTS.filter(p=>st.filter==='Все'||p.cat===st.filter).map(p=>{
+        const s=this.sizesOf(p.name);
+        return {...p, priceText:this.price(p.price), ph:p.ph,
+          stockText: s.length? 'в наличии '+s.join(', ') : 'только на пошив',
+          stockColor: s.length? 'rgba(20,18,12,.65)' : '#8A7413',
+          open: ()=>this.setState({screen:'product',pid:p.id,size:s[0]||null})};
+      }),
+
+      prod:{name:prod.name, ph:prod.ph, form:prod.form, fabric:prod.fabric},
+      prodPrice: inStock.length? this.price(prod.price) : this.price(prod.sew||prod.price),
+      prodNoStock: inStock.length===0,
+      prodSizes: prodSizesAll.map(label=>{
+        const on=!!st.stock[prod.name][label], sel=st.size===label;
+        return {label, pick: on? ()=>this.setState({size:label}) : ()=>this.toast('Размера '+label+' сейчас нет — можно сшить на заказ'),
+          bg: sel?INK:(on?'#fff':'transparent'), fg: sel?YEL:(on?INK:'rgba(20,18,12,.35)'),
+          border: sel?INK:(on?'rgba(20,18,12,.25)':'rgba(20,18,12,.15)')};
+      }),
+      buyLabel: inStock.length? (st.size? 'В корзину · '+st.size : 'Выберите размер') : 'Нет в наличии',
+      buyBg: (inStock.length&&st.size)?INK:'rgba(20,18,12,.12)',
+      buyFg: (inStock.length&&st.size)?YEL:'rgba(20,18,12,.62)',
+      addToCart: ()=>{
+        if(!inStock.length) return this.toast('Этой модели нет в наличии — оформите пошив');
+        if(!st.size) return this.toast('Выберите размер');
+        this.setState({cart:[...st.cart,{name:prod.name,meta:st.size+' · '+prod.fabric,price:prod.price}]});
+        this.toast(prod.name+' · '+st.size+' в корзине');
+      },
+
+      fabricSwatches: FABRICS.map(f=>({name:f.name,color:f.color,
+        ring: st.fabric===f.id?INK:'transparent', pick:()=>this.setState({fabric:f.id})})),
+      fabricRows: FABRICS.map(f=>({name:f.full,spec:f.spec,color:f.color,status:f.status,
+        statusColor: f.status==='в наличии'?'#3F6B4A':'#8A7413',
+        border: st.fabric===f.id?INK:'rgba(20,18,12,.14)', pick:()=>this.setState({fabric:f.id})})),
+
+      forms: ['Классическая','С узлами'].map(label=>({label,
+        pick:()=>this.setState({form:label}),
+        bg: st.form===label?INK:'#fff', fg: st.form===label?YEL:INK,
+        border: st.form===label?INK:'rgba(20,18,12,.25)'})),
+      mFields: MFIELDS.map(f=>({label:f.label,hint:f.hint,value:st.m[f.key],
+        set:(e)=>this.setState({m:{...this.state.m,[f.key]:e.target.value}})})),
+      filledText: 'заполнено '+MFIELDS.filter(f=>String(st.m[f.key]).trim()!=='').length+' из 6',
+      comment: st.comment, setComment:(e)=>this.setState({comment:e.target.value}),
+      sendMeasure: ()=>{
+        const filled=MFIELDS.filter(f=>String(st.m[f.key]).trim()!=='').length;
+        if(filled<3) return this.toast('Впишите хотя бы длину, плечи и грудь');
+        this.setState({screen:'done'});
+      },
+      newOrderNo: 144,
+
+      slots: ['пн 22 · 10:00','пн 22 · 15:00','вт 23 · 11:00','вт 23 · 17:00','чт 25 · 12:00','пт 26 · 09:30'].map(label=>({
+        label, pick:()=>this.setState({slot:label}),
+        bg: st.slot===label?INK:'#fff', fg: st.slot===label?YEL:INK,
+        border: st.slot===label?INK:'rgba(20,18,12,.2)'})),
+      bookLabel: st.slot? 'Записаться · '+st.slot : 'Выберите время',
+      bookBg: st.slot?INK:'rgba(20,18,12,.12)', bookFg: st.slot?YEL:'rgba(20,18,12,.62)',
+      bookSlot: ()=>{ if(!st.slot) return this.toast('Выберите время'); this.setState({screen:'orders'}); this.toast('Примерка '+st.slot+' · с. Шатой'); },
+
+      portfolio: [
+        {ph:'фото · камис',label:'Классическая форма, габардин'},
+        {ph:'фото · узлы',label:'Форма с узлами'},
+        {ph:'фото · комплект',label:'Комплект, лён'},
+        {ph:'фото · детский',label:'Детский камис'},
+        {ph:'фото · воротник',label:'Воротник, деталь'},
+        {ph:'фото · штаны',label:'Штаны, хлопок'}
+      ],
+      reviews: [{text:'здесь будет отзыв клиента'},{text:'здесь будет отзыв клиента'},{text:'здесь будет отзыв клиента'}],
+
+      cartItems: st.cart.map((i,idx)=>({name:i.name,meta:i.meta,priceText:this.price(i.price),
+        remove:()=>this.setState({cart:st.cart.filter((_,j)=>j!==idx)})})),
+      cartEmpty: st.cart.length===0, cartCount: st.cart.length,
+      cartTotal: this.fmt(st.cart.reduce((s,i)=>s+i.price,0)+((st.cart.length&&st.delivery==='СДЭК')?350:0)),
+      delivery: [
+        {label:'Самовывоз, с. Шатой',note:'можно сразу примерить',price:'бесплатно',key:'Самовывоз'},
+        {label:'СДЭК по России',note:'3–6 дней, оплата при получении',price:'350 ₽',key:'СДЭК'}
+      ].map(d=>({...d, pick:()=>this.setState({delivery:d.key}),
+        bg: (st.delivery||'Самовывоз')===d.key?'#fff':'transparent',
+        border: (st.delivery||'Самовывоз')===d.key?INK:'rgba(20,18,12,.18)',
+        dot: (st.delivery||'Самовывоз')===d.key?INK:'transparent'})),
+      orderBg: st.cart.length?INK:'rgba(20,18,12,.12)',
+      orderFg: st.cart.length?YEL:'rgba(20,18,12,.62)',
+      placeOrder: ()=>{
+        if(!st.cart.length) return this.toast('Корзина пуста');
+        this.setState({cart:[],screen:'orders'}); this.toast('Заказ принят · оплата при получении');
+      },
+
+      myOrders: st.orders.filter(o=>o.mine).map(o=>({
+        id:o.id, model:o.model, meta:o.meta||'', stageLabel:STAGES[o.stage],
+        steps: STAGES.map((label,i)=>({label,
+          dot: i<=o.stage?YEL:'transparent', ring: i<=o.stage?INK:'rgba(20,18,12,.3)',
+          fg: i<=o.stage?INK:'rgba(20,18,12,.4)',
+          lineL: i===0?'transparent':(i<=o.stage?INK:'rgba(20,18,12,.15)'),
+          lineR: i===STAGES.length-1?'transparent':(i<o.stage?INK:'rgba(20,18,12,.15)')}))
+      })),
+      pastOrders: st.past,
+
+      activeCount: st.orders.filter(o=>o.stage<4).length, newCount: 2,
+      cabOrders: st.orders.map(o=>({id:o.id,client:o.client,model:o.model,fabric:o.fabric,
+        stageLabel:STAGES[o.stage], pct: Math.round((o.stage+1)/STAGES.length*100)+'%',
+        open:()=>this.setState({screen:'cabOrder',cabId:o.id})})),
+      stockRows: Object.keys(st.stock).map(name=>({name,
+        sizes: Object.keys(st.stock[name]).map(label=>{
+          const on=st.stock[name][label];
+          return {label, bg: on?YEL:'transparent', fg: on?INK:'rgba(247,243,230,.55)',
+            border: on?YEL:'rgba(247,243,230,.25)',
+            toggle:()=>this.setState({stock:{...this.state.stock,[name]:{...this.state.stock[name],[label]:!on}}})};
+        })})),
+
+      cab:{id:cab.id,client:cab.client,model:cab.model,fabric:cab.fabric,comment:cab.comment},
+      cabMeasures: MFIELDS.map((f,i)=>({label:f.label,
+        value: (st.m[f.key] && String(st.m[f.key]).trim()!=='')? st.m[f.key] : [142,49,58,61,15,120][i],
+        bg: i%2?'rgba(247,243,230,.04)':'transparent'})),
+      cabSteps: STAGES.map((label,i)=>({label,
+        note: i<cab.stage?'готово':(i===cab.stage?'сейчас':''),
+        dot: i<=cab.stage?YEL:'transparent', ring: i<=cab.stage?YEL:'rgba(247,243,230,.3)',
+        bg: i===cab.stage?'rgba(231,220,82,.12)':'rgba(247,243,230,.04)',
+        border: i===cab.stage?'rgba(231,220,82,.4)':'rgba(247,243,230,.1)',
+        fg: i<=cab.stage?'#F7F3E6':'rgba(247,243,230,.5)'})),
+      advanceLabel: cab.stage>=STAGES.length-1? 'Заказ выдан' : 'Этап: '+STAGES[cab.stage+1],
+      advance: ()=>{
+        if(cab.stage>=STAGES.length-1) return this.toast('Заказ уже выдан');
+        this.setState({orders:this.state.orders.map(o=>o.id===cab.id?{...o,stage:o.stage+1}:o)});
+        this.toast('№'+cab.id+' → '+STAGES[cab.stage+1]);
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

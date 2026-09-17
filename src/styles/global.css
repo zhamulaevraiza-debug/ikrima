@@ -1,0 +1,116 @@
+:root {
+  --ink: #14120c;
+  --yel: #e7dc52;
+  --paper: #f7f3e6;
+  --page: #e8e4da;
+  color-scheme: light;
+}
+
+* { -webkit-tap-highlight-color: transparent; }
+
+html, body, #root { height: 100%; }
+
+body {
+  margin: 0;
+  background: var(--page);
+  font-family: Manrope, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior-y: none;
+}
+
+a { color: var(--ink); }
+a:hover { color: #6b5f1f; }
+
+input, textarea, button, select {
+  font-family: inherit;
+  color: inherit;
+}
+
+input:focus, textarea:focus { outline: none; border-color: var(--ink); }
+::placeholder { color: rgba(20, 18, 12, 0.55); }
+
+/* Keyboard users still get a visible focus ring; pointer users do not.
+   The dark cabinet screens repaint it by redefining --ink for their subtree. */
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; border-radius: 6px; }
+
+/* The design draws its own search field; WebKit's clear button is not part
+   of it, and the field is cleared by deleting the text. */
+input[type='search']::-webkit-search-cancel-button,
+input[type='search']::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Safari on iOS zooms the whole page when a field smaller than 16px takes
+   focus, which throws the layout around on every tap. The design's smaller
+   type is kept everywhere else; only iOS gets the larger field text. */
+@supports (-webkit-touch-callout: none) {
+  input, textarea, select { font-size: 16px; }
+}
+
+/* The prototype's clickable <div>s become real buttons here. Strip the
+   browser chrome so they look exactly as designed but stay operable by
+   keyboard and screen reader. */
+.tap {
+  appearance: none;
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  cursor: pointer;
+}
+
+/* Scrollable panes keep momentum scrolling on iOS and hide the bar on desktop. */
+.scroll {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.scroll::-webkit-scrollbar { width: 0; height: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@keyframes ikrima-toast-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Phone frame ────────────────────────────────────────────────
+   On a phone the app simply fills the screen. On a wider screen it
+   sits in a centred phone-sized frame, the way the design was drawn. */
+.frame-page {
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  background: var(--page);
+}
+
+.frame {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  background: var(--paper);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 560px) and (min-height: 680px) {
+  .frame-page { align-items: center; padding: 28px 22px; box-sizing: border-box; }
+  .frame {
+    width: 402px;
+    height: min(874px, calc(100dvh - 56px));
+    border-radius: 30px;
+    box-shadow: 0 24px 60px rgba(20, 18, 12, 0.22), 0 2px 8px rgba(20, 18, 12, 0.1);
+  }
+}
