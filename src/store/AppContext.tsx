@@ -25,6 +25,7 @@ import { DELIVERY_OPTIONS, MEASURE_FIELDS, initialData } from '../data/seed'
 import { fmt as fmtRub, price as formatPrice } from '../lib/format'
 import { uid } from '../lib/id'
 import { translate } from '../i18n/strings'
+import { hashPin, verifyPin } from '../lib/pin'
 import {
   initialSession,
   readSession,
@@ -123,9 +124,44 @@ export interface AppValue {
   advanceOrder: (id: number) => void
   toggleStock: (model: string, size: string) => void
 
+  // ── the tailor's cabinet lock ───────────────────────────────
+  /** False until she has chosen a code, in which case the gate asks her to. */
+  hasTailorPin: boolean
+  /** True for as long as this browser session stays open. */
+  tailorUnlocked: boolean
+  /** Sets or replaces the code, and unlocks. */
+  setTailorPin: (pin: string) => Promise<void>
+  /** Checks a code and unlocks on a match. */
+  unlockTailor: (pin: string) => Promise<boolean>
+  lockTailor: () => void
+
   // ── toast ───────────────────────────────────────────────────
   toast: string
   showToast: (text: string) => void
+}
+
+/**
+ * Whether the cabinet is open, kept in sessionStorage rather than with the rest
+ * of the session: closing the browser locks it again, and a customer handed the
+ * phone afterwards lands back at the code screen.
+ */
+const UNLOCK_KEY = 'ikrima.tailor.unlocked'
+
+function readUnlocked(): boolean {
+  try {
+    return sessionStorage.getItem(UNLOCK_KEY) === '1'
+  } catch {
+    return false
+  }
+}
+
+function writeUnlocked(open: boolean): void {
+  try {
+    if (open) sessionStorage.setItem(UNLOCK_KEY, '1')
+    else sessionStorage.removeItem(UNLOCK_KEY)
+  } catch {
+    /* storage blocked — the cabinet simply asks for the code again */
+  }
 }
 
 const AppContext = createContext<AppValue | null>(null)
@@ -136,6 +172,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false)
   const [session, setSession] = useState<SessionState>(initialSession)
   const [toast, setToast] = useState('')
+  const [tailorUnlocked, setTailorUnlocked] = useState(readUnlocked)
   const toastTimer = useRef<number>()
 
   // Load the shop's data once, then keep it in memory.
@@ -245,12 +282,17 @@ export function AppProvider({ children }: { children: ReactNode }) {
     priceMode,
     t,
     toggleLang: () => {
-      const settings = { ...data.settings, lang: lang === 'EN' ? ('RU' as Lang) : ('EN' as Lang) }
-      commit((d) => ({ ...d, settings }), () => repo.saveSettings(settings))
+      const patch = { lang: lang === 'EN' ? ('RU' as Lang) : ('EN' as Lang) }
+      commit(
+        (d) => ({ ...d, settings: { ...d.settings, ...patch } }),
+        () => repo.saveSettings(patch),
+      )
     },
     setPriceMode: (mode) => {
-      const settings = { ...data.settings, priceMode: mode }
-      commit((d) => ({ ...d, settings }), () => repo.saveSettings(settings))
+      commit(
+        (d) => ({ ...d, settings: { ...d.settings, priceMode: mode } }),
+        () => repo.saveSettings({ priceMode: mode }),
+      )
     },
 
     fmt: fmtRub,
@@ -446,6 +488,29 @@ export function AppProvider({ children }: { children: ReactNode }) {
         }),
         () => repo.setStock(model, size, available),
       )
+    },
+
+    hasTailorPin: data.settings.tailorPinHash !== null,
+    tailorUnlocked,
+    setTailorPin: async (pin) => {
+      const tailorPinHash = await hashPin(pin)
+      commit(
+        (d) => ({ ...d, settings: { ...d.settings, tailorPinHash } }),
+        () => repo.saveSettings({ tailorPinHash }),
+      )
+      writeUnlocked(true)
+      setTailorUnlocked(true)
+    },
+    unlockTailor: async (pin) => {
+      const stored = data.settings.tailorPinHash
+      if (!stored || !(await verifyPin(pin, stored))) return false
+      writeUnlocked(true)
+      setTailorUnlocked(true)
+      return true
+    },
+    lockTailor: () => {
+      writeUnlocked(false)
+      setTailorUnlocked(false)
     },
 
     toast,

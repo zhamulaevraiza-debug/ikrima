@@ -40,8 +40,17 @@ const darkScreen = { background: INK, '--ink': YEL } as CSSProperties
 /** The tailor's own dark screen: her orders, her stock, her price display. */
 export function CabinetScreen() {
   const navigate = useNavigate()
-  const { t, data, stagesOf, stageLabel, openCabOrder, toggleStock, priceMode, setPriceMode } =
-    useApp()
+  const {
+    t,
+    data,
+    stagesOf,
+    stageLabel,
+    openCabOrder,
+    toggleStock,
+    priceMode,
+    setPriceMode,
+    lockTailor,
+  } = useApp()
 
   // The prototype hard-coded both tiles; here they follow the real orders.
   const activeCount = data.orders.filter((o) => o.stage < stagesOf(o).length - 1).length
@@ -189,6 +198,42 @@ export function CabinetScreen() {
               {mode}
             </Tap>
           ))}
+        </div>
+
+        <div style={{ marginTop: 28, display: 'flex', gap: 9 }}>
+          <Tap
+            onClick={() => {
+              lockTailor()
+              navigate('/profile')
+            }}
+            style={{
+              flex: 1,
+              padding: 13,
+              borderRadius: 11,
+              border: `1.3px solid ${paper(0.3)}`,
+              color: PAPER,
+              textAlign: 'center',
+              fontSize: 12.5,
+              fontWeight: 700,
+            }}
+          >
+            Выйти
+          </Tap>
+          <Tap
+            onClick={() => navigate('/cabinet/pin')}
+            style={{
+              flex: 1,
+              padding: 13,
+              borderRadius: 11,
+              border: `1.3px solid ${paper(0.18)}`,
+              color: paper(0.6),
+              textAlign: 'center',
+              fontSize: 12.5,
+              fontWeight: 700,
+            }}
+          >
+            Сменить код
+          </Tap>
         </div>
       </ScreenBody>
     </Screen>

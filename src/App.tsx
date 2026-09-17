@@ -14,6 +14,8 @@ import { OrdersScreen } from './screens/OrdersScreen'
 import { ProfileScreen } from './screens/ProfileScreen'
 import { CabinetScreen } from './screens/CabinetScreen'
 import { CabOrderScreen } from './screens/CabOrderScreen'
+import { RequireTailor } from './components/RequireTailor'
+import { TailorGateScreen } from './screens/TailorGateScreen'
 
 /** Routes that sit outside the customer's tab bar. */
 const FULL_SCREEN = ['/done', '/cabinet']
@@ -50,8 +52,31 @@ function Router() {
         <Route path="cart" element={<CartScreen />} />
         <Route path="orders" element={<OrdersScreen />} />
         <Route path="profile" element={<ProfileScreen />} />
-        <Route path="cabinet" element={<CabinetScreen />} />
-        <Route path="cabinet/:orderId" element={<CabOrderScreen />} />
+        <Route
+          path="cabinet"
+          element={
+            <RequireTailor>
+              <CabinetScreen />
+            </RequireTailor>
+          }
+        />
+        {/* Static segment, so react-router ranks it above cabinet/:orderId. */}
+        <Route
+          path="cabinet/pin"
+          element={
+            <RequireTailor>
+              <TailorGateScreen change />
+            </RequireTailor>
+          }
+        />
+        <Route
+          path="cabinet/:orderId"
+          element={
+            <RequireTailor>
+              <CabOrderScreen />
+            </RequireTailor>
+          }
+        />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>

@@ -152,7 +152,16 @@ export interface IkrimaData {
   reviews: Review[]
   /** Fitting slots the tailor has open, and whether each is taken. */
   slots: { label: string; taken: boolean }[]
-  settings: { lang: Lang; priceMode: PriceMode }
+  settings: {
+    lang: Lang
+    priceMode: PriceMode
+    /**
+     * Hash of the code that opens the tailor's cabinet. Null until she sets one
+     * on her first visit. See src/lib/pin.ts for what this does and does not
+     * protect.
+     */
+    tailorPinHash: string | null
+  }
   /** Next order number to hand out. */
   nextOrderId: number
 }

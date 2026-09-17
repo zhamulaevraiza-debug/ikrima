@@ -12,7 +12,7 @@ import type { IkrimaRepository } from './repository'
  *   POST   /orders                      ← Order
  *   PATCH  /orders/:id                  ← Partial<Order>
  *   POST   /slots/book                  ← { label, orderId? }
- *   PUT    /settings                    ← IkrimaData['settings']
+ *   PATCH  /settings                    ← Partial<IkrimaData['settings']>
  *
  * Until then the app runs on `LocalRepository` and nothing here is called.
  */
@@ -44,8 +44,8 @@ export class HttpRepository implements IkrimaRepository {
     await this.request('POST', '/slots/book', { label, orderId })
   }
 
-  async saveSettings(settings: IkrimaData['settings']): Promise<void> {
-    await this.request('PUT', '/settings', settings)
+  async saveSettings(patch: Partial<IkrimaData['settings']>): Promise<void> {
+    await this.request('PATCH', '/settings', patch)
   }
 
   async reset(): Promise<void> {

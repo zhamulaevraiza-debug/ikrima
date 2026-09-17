@@ -100,7 +100,7 @@ export function initialData(): IkrimaData {
       { label: 'чт 25 · 12:00', taken: false },
       { label: 'пт 26 · 09:30', taken: false },
     ],
-    settings: { lang: 'RU', priceMode: 'точные' },
+    settings: { lang: 'RU', priceMode: 'точные', tailorPinHash: null },
     nextOrderId: 144,
   }
 }

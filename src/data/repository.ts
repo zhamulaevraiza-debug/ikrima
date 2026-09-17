@@ -19,7 +19,8 @@ export interface IkrimaRepository {
   updateOrder(id: number, patch: Partial<Order>): Promise<void>
   /** Reserve a fitting slot, optionally against an order. */
   bookSlot(label: string, orderId?: number): Promise<void>
-  saveSettings(settings: IkrimaData['settings']): Promise<void>
+  /** Change some settings. Fields left out keep whatever is stored. */
+  saveSettings(patch: Partial<IkrimaData['settings']>): Promise<void>
   /** Throw away local changes and start from the seed data again. */
   reset(): Promise<void>
 }
@@ -81,8 +82,11 @@ export class LocalRepository implements IkrimaRepository {
     }))
   }
 
-  async saveSettings(settings: IkrimaData['settings']): Promise<void> {
-    this.mutate((data) => ({ ...data, settings }))
+  async saveSettings(patch: Partial<IkrimaData['settings']>): Promise<void> {
+    // Merged into the *stored* settings, not the caller's copy: a tab that
+    // loaded before the tailor chose her code would otherwise write its stale
+    // `tailorPinHash: null` back over it the next time anyone switched language.
+    this.mutate((data) => ({ ...data, settings: { ...data.settings, ...patch } }))
   }
 
   async reset(): Promise<void> {
